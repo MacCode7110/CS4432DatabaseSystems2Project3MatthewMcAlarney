@@ -21,15 +21,15 @@ public class Application {
                 System.out.println("Program Exited.");
                 break;
             }
-            if (userInput.startsWith("SELECT A.Col1, A.Col2, B.Col1, B.Col2 FROM A, B WHERE ")) {
+            if (userInput.equals("SELECT A.Col1, A.Col2, B.Col1, B.Col2 FROM A, B WHERE A.RandomV = B.RandomV")) {
                 //Section 2 hash-based join
-                rV.buildHashBasedJoin(Integer.parseInt(userInput.substring(56, userInput.indexOf(" ", 56))),
-                        Integer.parseInt(userInput.substring(userInput.indexOf("=") + 4)));
+                System.out.println("Worked");
+                rV.buildHashBasedJoin();
             }
-            if (userInput.startsWith("SELECT count(*) FROM A, B WHERE ")) {
+            if (userInput.equals("SELECT count(*) FROM A, B WHERE A.RandomV > B.RandomV")) {
                 //Section 3 block-level nested-loop join
-                rV.buildBlockLevelNestedLoopJoin(Integer.parseInt(userInput.substring(34, userInput.indexOf(" ", 34))),
-                        Integer.parseInt(userInput.substring(userInput.indexOf(">") + 4)));
+                System.out.println("Worked");
+                rV.buildBlockLevelNestedLoopJoin();
             }
         }
     }
