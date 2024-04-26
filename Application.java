@@ -6,7 +6,7 @@ import java.util.Scanner;
  */
 public class Application {
     /**
-     * Start of the execution of the Java program; parses and handles user input, which includes the hash-based join, block-level nested-loop join, and hash-based aggregation commands.
+     * Start of the execution of the Java program; parses and handles user input, which includes the hash-based join, and block-level nested-loop join.
      * @param args the list of command line arguments passed to main
      * @throws IOException
      */
@@ -21,28 +21,15 @@ public class Application {
                 System.out.println("Program Exited.");
                 break;
             }
-            if (userInput.equals("CREATE INDEX ON Project2Dataset (RandomV)") && !(rV.isIndexesInitialized())) {
-                rV.initializeIndexes();
-                System.out.println("The hash-based and array-based indexes are built successfully. Program is ready and waiting for user command.");
-            } else if (userInput.equals("CREATE INDEX ON Project2Dataset (RandomV)") && rV.isIndexesInitialized()) {
-                System.out.println("Indexes have already been created on Project2Dataset (RandomV).");
-                System.out.println("Program is ready and waiting for user command.");
+            if (userInput.startsWith("SELECT A.Col1, A.Col2, B.Col1, B.Col2 FROM A, B WHERE ")) {
+                //Section 2 hash-based join
+                rV.buildHashBasedJoin(Integer.parseInt(userInput.substring(56, userInput.indexOf(" ", 56))),
+                        Integer.parseInt(userInput.substring(userInput.indexOf("=") + 4)));
             }
-            if (userInput.startsWith("RandomV =", 36)) {
-                //Query Case 1, Equality: SELECT * FROM Project2Dataset WHERE RandomV = v
-                rV.handleEqualityQueryLookup(Integer.parseInt(userInput.substring(46)));
-                System.out.println("Program is ready and waiting for user command.");
-            }
-            if (userInput.startsWith("RandomV >", 36)) {
-                //Query Case 2, Range: SELECT * FROM Project2Dataset WHERE RandomV > v1 AND RandomV < v2
-                rV.handleRangeQueryLookup(Integer.parseInt(userInput.substring(46,(userInput.indexOf("A") - 1))),
-                        Integer.parseInt(userInput.substring(userInput.indexOf("<") + 2)));
-                System.out.println("Program is ready and waiting for user command.");
-            }
-            if (userInput.startsWith("RandomV !=", 36)) {
-                //Query Case 3, Inequality: SELECT * FROM Project2Dataset WHERE RandomV != v
-                rV.handleInequalityQueryLookup(Integer.parseInt(userInput.substring(47)));
-                System.out.println("Program is ready and waiting for user command.");
+            if (userInput.startsWith("SELECT count(*) FROM A, B WHERE ")) {
+                //Section 3 block-level nested-loop join
+                rV.buildBlockLevelNestedLoopJoin(Integer.parseInt(userInput.substring(34, userInput.indexOf(" ", 34))),
+                        Integer.parseInt(userInput.substring(userInput.indexOf(">") + 4)));
             }
         }
     }
