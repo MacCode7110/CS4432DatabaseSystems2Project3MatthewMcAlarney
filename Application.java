@@ -23,13 +23,13 @@ public class Application {
             }
             if (userInput.equals("SELECT A.Col1, A.Col2, B.Col1, B.Col2 FROM A, B WHERE A.RandomV = B.RandomV")) {
                 //Section 2 hash-based join
-                System.out.println("Worked");
                 rV.buildHashBasedJoin();
+                System.out.println("Program is ready and waiting for user command.");
             }
             if (userInput.equals("SELECT count(*) FROM A, B WHERE A.RandomV > B.RandomV")) {
                 //Section 3 block-level nested-loop join
-                System.out.println("Worked");
                 rV.buildBlockLevelNestedLoopJoin();
+                System.out.println("Program is ready and waiting for user command.");
             }
         }
     }
