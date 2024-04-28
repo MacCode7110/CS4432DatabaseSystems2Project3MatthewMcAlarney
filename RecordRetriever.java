@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 public class RecordRetriever {
     private final static int TOTALNUMBEROFFILESPERDATASET = 99;
     private final static int TOTALNUMBEROFBYTESPERFILE = 4000;
+    private final static int TOTALNUMBEROFRECORDSPERFILE = 100;
 
     public void buildHashBasedJoin() throws IOException {
         long startTime = System.currentTimeMillis();
@@ -92,7 +93,7 @@ public class RecordRetriever {
         ByteBuffer bytes = ByteBuffer.allocate(40);
         int randomVValue;
         int qualifyingRecordCount = 0;
-        String [] fileRecords = new String[100]; //Array used to hold all records in a single file in memory.
+        String [] fileRecords = new String[TOTALNUMBEROFRECORDSPERFILE]; //Array used to hold all records in a single file in memory.
 
         //Iterate over each file in datasetA
         for (int i = 0; i < TOTALNUMBEROFFILESPERDATASET; i++) {
@@ -115,9 +116,9 @@ public class RecordRetriever {
             for (int k = 0; k < TOTALNUMBEROFFILESPERDATASET; k++) {
 
                 try {
-                    fileInputStream = new FileInputStream("Project3Dataset-B/B" + (i + 1) + ".txt");
+                    fileInputStream = new FileInputStream("Project3Dataset-B/B" + (k + 1) + ".txt");
                 } catch (IOException e) {
-                    System.out.println("File " + (i + 1) + " could not be opened from Project3Dataset-B.");
+                    System.out.println("File " + (k + 1) + " could not be opened from Project3Dataset-B.");
                 }
 
                 for (int l = 0; l < TOTALNUMBEROFBYTESPERFILE; l+=40) {
