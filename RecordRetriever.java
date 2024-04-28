@@ -168,7 +168,7 @@ public class RecordRetriever {
 
         fileInputStream.close();
         endTime = System.currentTimeMillis();
-        System.out.println("Time taken to execute building the hash-based join: " + (endTime - startTime) + " milliseconds" + "\n"
+        System.out.println("Time taken to execute building the block-level nested-loop join: " + (endTime - startTime) + " milliseconds" + "\n"
                 + "Total count of qualifying records: " + qualifyingRecordCount);
     }
 }
