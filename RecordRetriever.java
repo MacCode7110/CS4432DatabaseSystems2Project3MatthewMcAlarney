@@ -2,11 +2,32 @@ import java.nio.ByteBuffer;
 import java.util.*;
 import java.io.IOException;
 import java.io.FileInputStream;
+
+/**
+ * Retrieves records from the Project3Dataset-A and Project3Dataset-B directories through building hash-based joins and block-level nested-loop joins.
+ *  * Answers queries requesting joins on equality and comparison of the randomV column of both datasets.
+ */
 public class RecordRetriever {
+
+    /**
+     * The total number of files in each of the project datasets: Project3Dataset-A and Project3Dataset-B.
+     */
     private final static int TOTALNUMBEROFFILESPERDATASET = 99;
+
+    /**
+     * The total number of bytes in each of the project dataset files.
+     */
     private final static int TOTALNUMBEROFBYTESPERFILE = 4000;
+
+    /**
+     * The total number of records in each of the project dataset files.
+     */
     private final static int TOTALNUMBEROFRECORDSPERFILE = 100;
 
+    /**
+     * Builds a hash-based join on the first two columns of records from Project3Dataset-A and Project3Dataset-B on the condition that A.randomV = B.randomV.
+     * @throws IOException
+     */
     public void buildHashBasedJoin() throws IOException {
         long startTime = System.currentTimeMillis();
         long endTime;
@@ -86,6 +107,11 @@ public class RecordRetriever {
                             "Time taken to execute building the hash-based join: " + (endTime - startTime) + " milliseconds");
         }
     }
+
+    /**
+     * Builds a block-level nested-loop join on records from Project3Dataset-A and Project3Dataset-B on the condition that A.randomV > B.randomV.
+     * @throws IOException
+     */
     public void buildBlockLevelNestedLoopJoin () throws IOException {
         long startTime = System.currentTimeMillis();
         long endTime;
@@ -113,6 +139,7 @@ public class RecordRetriever {
                 bytes.clear();
             }
 
+            //Iterate over each file in datasetB.
             for (int k = 0; k < TOTALNUMBEROFFILESPERDATASET; k++) {
 
                 try {
@@ -121,11 +148,14 @@ public class RecordRetriever {
                     System.out.println("File " + (k + 1) + " could not be opened from Project3Dataset-B.");
                 }
 
+                //Iterate over all records in the current file in datasetB.
                 for (int l = 0; l < TOTALNUMBEROFBYTESPERFILE; l+=40) {
                     fileInputStream.getChannel().read(bytes, l);
                     randomVValue = Integer.parseInt(new String(Arrays.copyOfRange(bytes.array(), 33, 37)));
 
+                    //Iterative over all records in the memory array for the current file stored from datasetA.
                     for (String s : fileRecords) {
+                        //Join condition checked.
                         if (Integer.parseInt(s.substring(33, 37)) > randomVValue) {
                             qualifyingRecordCount++;
                         }
