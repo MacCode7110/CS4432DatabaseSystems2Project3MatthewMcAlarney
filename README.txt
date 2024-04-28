@@ -26,7 +26,7 @@ Section 2 - Test Results
 
     Both the hash-based and block-level nested-loop joins successfully work:
 
-    Below are the input commands and output messages in terminal that demonstrate the successful functionality of both join queries:
+    Below are the input commands and output messages run through IntelliJ that demonstrate the successful functionality of both join queries:
 
     Block-level nested-loop join:
 
